@@ -208,6 +208,10 @@ class ImporterController < ApplicationController
 
     # attrs_map is fields_map's invert
     attrs_map = fields_map.invert
+    attrs_map = Marshal.load(Marshal.dump(fields_map.invert))
+    attrs_map.values.each do |v|
+      v.force_encoding('utf-8') if v.respond_to?(:force_encoding)
+    end
 
     # check params
     unique_error = nil
