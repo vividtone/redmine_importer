@@ -65,7 +65,9 @@ class ImporterController < ApplicationController
     i = 0
     @samples = []
     
-    CSV.parse(iip.csv_data.force_encoding("UTF-8"), {:headers=>true,
+    csv_data = iip.csv_data
+    csv_data.force_encoding("UTF-8") if csv_data.respond_to?(:force_encoding)
+    CSV.parse(csv_data, {:headers=>true,
     :quote_char=>iip.quote_char, :col_sep=>iip.col_sep}).each do |row|
       @samples[i] = row
      
@@ -232,7 +234,9 @@ class ImporterController < ApplicationController
       return
     end
 
-    CSV.parse(iip.csv_data.force_encoding("UTF-8"), {:headers=>true,
+    csv_data = iip.csv_data
+    csv_data.force_encoding("UTF-8") if csv_data.respond_to?(:force_encoding)
+    CSV.parse(csv_data, {:headers=>true,
         :quote_char=>iip.quote_char, :col_sep=>iip.col_sep}).each do |row|
 
       project = Project.find_by_name(row[attrs_map["project"]])
